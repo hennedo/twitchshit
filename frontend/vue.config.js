@@ -6,6 +6,7 @@ module.exports = {
     outputDir: "../backend/static",
     configureWebpack: {
         devServer: {
+            disableHostCheck: true,
             proxy: {
                 "/ws": {
                     "target": "ws://localhost:8000",
@@ -13,6 +14,11 @@ module.exports = {
                     "secure": false,
                     "changeOrigin": true
                 },
+                "/oauthrequest": {
+                    "target": "http://localhost:8000",
+                    "secure": false,
+                    "changeOrigin": true
+                }
             }
         }
     }

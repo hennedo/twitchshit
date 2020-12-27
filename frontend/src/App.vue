@@ -1,68 +1,45 @@
 <template>
   <div id="app">
-    <button @click="sendClap()">Send Clap</button>
-    <img src="/clap.png" class="clap" v-for="clapp of claps" :style="clapp" :key="clapp.id">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 
-  import websockets from './assets/sockets'
-
 export default {
   name: 'App',
   data() {
     return {
-      claps: [],
-      lastID: 0
     }
-  } ,
-  components: {
-
-  },
-  methods: {
-    clap: function() {
-      let newClap = {
-        id: this.lastID++,
-        left: (100 + Math.floor(Math.random() * 500)) + "px"
-      }
-      this.claps.push(newClap)
-      setTimeout(() => {
-        for(let i = 0; i<this.claps.length; i++) {
-          if(this.claps[i].id === newClap.id) {
-            this.claps.splice(i, 1)
-          }
-        }
-      }, 3000)
-    },
-    sendClap: function() {
-      websockets.emit("clap", {})
-    }
-  },
-  mounted() {
-    websockets.on("clap", this.clap)
-  },
-  beforeUnmount() {
-    websockets.off(this.clap)
   }
 }
 </script>
 
-<style>
+<style type="text/scss">
   body {
     background: black;
+    color: white;
+  }
+  html, body {
+    padding: 0;
+    margin: 0;
   }
 
-  .clap {
+  .clap-animation-enter-active, .clap {
     position: absolute;
     bottom: -67px;
     left: 150px;
+    width: 66px;
+    height: 66px;
     animation-name: clap-on;
     animation-duration: 2s;
+    animation-fill-mode: forwards;
   }
   @keyframes clap-on {
     to {
       bottom: 250px;
+      width: 200px;
+      height: 200px;
       opacity: 0;
     }
   }

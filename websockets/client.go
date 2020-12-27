@@ -66,9 +66,12 @@ func (c *Client) readPump() {
 		if err != nil {
 			logrus.Error(err)
 		}
-		s, _ := msg.Args.MarshalJSON()
+		b, _ := msg.Args.MarshalJSON()
+		s := string(b)
+		s = strings.TrimPrefix(s, "\"")
+		s = strings.TrimSuffix(s, "\"")
 		logrus.Tracef("New Message '%s' from client %d", msg.Type, c.id)
-		c.hub.Handle(c, msg.Type, string(s))
+		c.hub.Handle(c, msg.Type, s)
 		logrus.Tracef("New Message '%s' from client %d handled", msg.Type, c.id)
 	}
 }
